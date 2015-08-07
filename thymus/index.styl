@@ -1,0 +1,63 @@
+@import '../example/example'
+@import 'colorsystem_functions'
+
+resolvePropertiesRecursively(tree, twigStack, parent, depth, preparedTheme)
+    // go one deeper
+    twig = getTwig(tree, twigStack)
+    children = twig['children']
+
+    for twig in children
+        if twig != null
+            scopedTwigStack = {}
+
+            // clone twig stack
+            for entry in twigStack
+                scopedTwigStack[entry] = twigStack[entry]
+            depth = depth + 1
+
+            // change depth-specific variables
+            scopedTwigStack[twig + depth] = twig
+            selector = buildSelector(scopedTwigStack)
+            twigProperties = getTwig(tree,scopedTwigStack)
+
+            // if the color is defined by given theme
+            if theme[selector] != null
+                preparedTheme[selector] = theme[selector]
+                parent = theme[selector]
+            // if a parent is defined, derive color with procedure
+            else if parent
+                colorValue = execProcedure(parent, twigProperties)
+                preparedTheme[selector] = colorValue
+                parent = theme[selector]
+            preparedTheme = resolvePropertiesRecursively(tree, scopedTwigStack, parent, depth, preparedTheme)
+    return preparedTheme
+
+
+prepareTheme(theme)
+    preparedTheme = {}
+    for branch in tree
+        // set traversion utilities
+        depth = 0
+        twigStack = {}
+        twigStack[branch + depth] = branch
+        parent = false
+        selector = buildSelector(twigStack)
+        static = false
+
+
+        // if this branch has a default value
+        if tree[branch]['default'] != null
+            preparedTheme[branch] = tree[branch]['default']
+        else
+            // if the first color is defined in the given theme
+            if theme[selector] is not null
+                preparedTheme[selector] = theme[selector]
+                parent = theme[selector]
+
+
+            resolvedChildrenProperties = resolvePropertiesRecursively(tree, twigStack, parent, depth, preparedTheme)
+
+    return resolvedChildrenProperties
+
+theme = prepareTheme(theme)
+error(theme)

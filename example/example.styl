@@ -1,0 +1,49 @@
+tree = {
+    'primary':{
+        'children': {
+            'shaded':{
+                'procedure': desaturate
+                'params': {
+                    color: null
+                    value: 40%
+                }
+                'children':{
+                    'lucent': {
+                        'procedure': transparentify
+                        'params': {
+                            background: #234
+                            color: null
+                            opacity: 0.6
+                        }
+                    }
+                }
+            }
+            'intense':{
+                'procedure': darken
+                'params': {
+                    color: null
+                    value: 0.3
+                }
+            }
+        }
+    }
+    lucent: {
+        default: transparent
+    }
+    'highlight':{
+        'children': {
+            'shaded':{
+                'procedure': desaturate
+                'params': {
+                    color: null
+                    value: 40%
+                }
+            }
+        }
+    }
+}
+theme = {
+    'primary': red
+    'secondary': blue
+    'primary-shaded': #F000DE
+}

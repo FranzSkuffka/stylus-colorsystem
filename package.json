@@ -1,0 +1,23 @@
+{
+  "name": "thymus",
+  "maintainers": [
+    {
+      "name": "Jan Wirth",
+      "web": "github.com/franzskuffka"
+    }
+  ],
+  "main": "main.js",
+  "version": "0.0.1",
+  "description": "A utility for creating color systems.",
+  "keywords": [
+    "stylus",
+    "css",
+    "utility",
+    "colors"
+  ],
+  "categories": [
+    "CSS",
+    "Utility"
+  ],
+  "license": "MIT"
+}

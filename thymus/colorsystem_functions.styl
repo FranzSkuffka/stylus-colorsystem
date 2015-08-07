@@ -1,0 +1,45 @@
+
+// build selector from current traversion stack
+buildSelector(twigStack)
+    twigDepth = 0
+    currentSelector = ''
+    for twig in twigStack
+
+        if twigDepth == 0
+            currentSelector = currentSelector + '' + twigStack[twig]
+        if twigDepth != 0
+            currentSelector = currentSelector + '-' + twigStack[twig]
+        twigDepth = twigDepth + 1
+    return currentSelector
+
+// get twig properties from current traversion stack
+getTwig(currentTwig, stack)
+    depth = 0
+    for twigId in stack
+        twigName = stack[twigId]
+        if depth == 0
+            currentTwig = currentTwig[twigName]
+        else if depth != 0
+            currentTwig = currentTwig['children'][twigName]
+        depth = depth + 1
+    return currentTwig
+
+// execute the procedure defined in twig properties
+execProcedure(parent,twigProperties)
+    procedure = twigProperties['procedure']
+    params = twigProperties['params']
+    params['color'] = parent
+    params = transformParams(params)
+
+    //procedure with a maximum of 4 different params permitted
+    colorValue = procedure(params['p0'], params['p1'], params['p2'], params['p3'])
+    return colorValue
+
+// transform parameters into list format to pass to function
+transformParams(params)
+    actualParams = {}
+    paramNumber = 0
+    for param in params
+        actualParams['p' + paramNumber] = params[param]
+        paramNumber = paramNumber + 1
+    return actualParams
