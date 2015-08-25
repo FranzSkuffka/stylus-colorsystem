@@ -1,0 +1,19 @@
+parseListToObj(list)
+    i = 0
+    obj = {}
+
+    // check if list is flat
+    if list[3] is null and list[1][1] is null and list[0][1] is null
+        obj[list[0]] = list[1]
+    else
+        for list in list
+            key = list[0]
+            prop = list[1]
+
+            // check if property is flat
+            if prop[1] is null
+                obj[key] = prop
+            else
+                obj[key] = parseListToObj(prop)
+
+    return obj

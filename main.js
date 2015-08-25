@@ -3,7 +3,7 @@ module.exports = function(opts) {
 
   return function(style){
     style.include(__dirname);
-    if (implicit) { style.import('thymus'); }
+    if (implicit) { style.import('colorsystem'); }
   }
 
 }
