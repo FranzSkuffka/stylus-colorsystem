@@ -1,7 +1,6 @@
-@import '../example/example'
 @import 'colorsystem_functions'
 
-resolvePropertiesRecursively(tree, twigStack, parent, depth, preparedTheme)
+resolvePropertiesRecursively(tree, twigStack, parent, depth, baseTheme, preparedTheme)
     // go one deeper
     twig = getTwig(tree, twigStack)
     children = twig['children']
@@ -20,20 +19,20 @@ resolvePropertiesRecursively(tree, twigStack, parent, depth, preparedTheme)
             selector = buildSelector(scopedTwigStack)
             twigProperties = getTwig(tree,scopedTwigStack)
 
-            // if the color is defined by given theme
-            if theme[selector] != null
-                preparedTheme[selector] = theme[selector]
-                parent = theme[selector]
+            // if the color is defined by given baseTheme
+            if baseTheme[selector] != null
+                preparedTheme[selector] = baseTheme[selector]
+                parent = baseTheme[selector]
             // if a parent is defined, derive color with procedure
             else if parent
                 colorValue = execProcedure(parent, twigProperties)
                 preparedTheme[selector] = colorValue
-                parent = theme[selector]
-            preparedTheme = resolvePropertiesRecursively(tree, scopedTwigStack, parent, depth, preparedTheme)
+                parent = baseTheme[selector]
+            preparedTheme = resolvePropertiesRecursively(tree, scopedTwigStack, parent, depth, baseTheme, preparedTheme)
     return preparedTheme
 
 
-prepareTheme(theme)
+prepareTheme(baseTheme, tree)
     preparedTheme = {}
     for branch in tree
         // set traversion utilities
@@ -49,15 +48,12 @@ prepareTheme(theme)
         if tree[branch]['default'] != null
             preparedTheme[branch] = tree[branch]['default']
         else
-            // if the first color is defined in the given theme
-            if theme[selector] is not null
-                preparedTheme[selector] = theme[selector]
-                parent = theme[selector]
+            // if the first color is defined in the given baseTheme
+            if baseTheme[selector] is not null
+                preparedTheme[selector] = baseTheme[selector]
+                parent = baseTheme[selector]
 
 
-            resolvedChildrenProperties = resolvePropertiesRecursively(tree, twigStack, parent, depth, preparedTheme)
+            resolvedChildrenProperties = resolvePropertiesRecursively(tree, twigStack, parent, depth, baseTheme, preparedTheme)
 
     return resolvedChildrenProperties
-
-theme = prepareTheme(theme)
-error(theme)
