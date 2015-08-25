@@ -42,8 +42,13 @@ tree = {
         }
     }
 }
-theme = {
+baseTheme = {
     'primary': red
     'secondary': blue
     'primary-shaded': #F000DE
 }
+
+@import '../thymus/index.styl'
+
+theme = prepareTheme(baseTheme, tree)
+p(theme);

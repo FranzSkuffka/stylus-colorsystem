@@ -19,5 +19,8 @@
     "CSS",
     "Utility"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "scripts":{
+      "test": "stylus example/example.styl -o ."
+  }
 }
